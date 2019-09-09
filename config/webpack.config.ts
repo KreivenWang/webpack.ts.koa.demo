@@ -13,7 +13,7 @@ class WebpackConfig implements Configuration {
   entry = [path.resolve(__dirname, '../src/index.ts')];
   output = {
     path: path.resolve(__dirname, '../dist'),
-    filename: 'index.js'
+    filename: 'bundle.js'
   };
   // 这里为开发环境留空
   externals: ExternalsElement[] = [];
