@@ -25,8 +25,8 @@ export class App {
 
   initSocket() {
     this.io.on('connection', (socket: Socket) => {
-      socket.on('login', () => {
-        console.log('user login');
+      socket.on('/login', (ctx: any) => {
+        console.log('user login with: ' + ctx);
       });
     });
   }
