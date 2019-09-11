@@ -1,29 +1,30 @@
 var path = require('path');
 var webpack = require('webpack');
 var nodeExternals = require('webpack-node-externals');
+
+// __dirname: absolute directory for current running file.
 console.log(__dirname);
+
 module.exports = {
   target: 'node',
   mode: 'production',
-  entry: [path.resolve(__dirname, './src/index.ts')], //入口文件
+  entry: [path.resolve(__dirname, './src/index.ts')],
   output: {
-    //node.js中__dirname变量获取当前模块文件所在目录的完整绝对路径
-    path: __dirname + '/dist', //输出位置
-    filename: 'bundle.js' //输入文件
+    path: __dirname + '/dist',
+    filename: 'server.js'
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         use: [
-          // tsc编译后，再用babel处理
+          // after tsc, babel-loader will do the job
           { loader: 'babel-loader' },
           {
             loader: 'ts-loader',
             options: {
-              // 加快编译速度
+              // fastern compilation speed
               transpileOnly: true,
-              // 指定特定的ts编译配置，为了区分脚本的ts配置
               configFile: path.resolve(__dirname, './tsconfig.json')
             }
           }
@@ -40,7 +41,7 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js', '.json']
   },
-  plugins: [new webpack.BannerPlugin('This file is created by xp')],
+  // plugins: [new webpack.BannerPlugin('This file is created by xp')],
   externals: [
     //have node modules excluded
     nodeExternals()

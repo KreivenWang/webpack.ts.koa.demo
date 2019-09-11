@@ -4,9 +4,13 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "buildjs": "rm -rf ./dist && webpack",
-    "dev": "rm -rf ./dist && ts-node ./scripts/start.dev.ts",
-    "build": "rm -rf ./dist && ts-node ./scripts/build.ts"
+    "remove-dist": "rm -rf dist && rm -rf isolate-dist",
+    "copy-isolate-dist": "mkdir isolate-dist && cp -r dist isolate-dist/dist",
+    "build:js": "npm run remove-dist && webpack && npm run copy-isolate-dist",
+    "serve:isolate": "node isolate-dist/dist/server.js",
+    "serve": "node dist/server.js",
+    "build:ts:dev": "npm run remove-dist && ts-node ./scripts/start.dev.ts",
+    "build:ts:prod": "npm run remove-dist && ts-node ./scripts/build.ts"
   },
   "author": "",
   "license": "ISC",
