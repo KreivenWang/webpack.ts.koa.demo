@@ -1,11 +1,41 @@
+import http from 'http';
 import koa from 'koa';
+import socketio, { Server as IO, Socket } from 'socket.io';
 
-const app = new koa();
+export class App {
+  app: any;
+  io: IO;
+  httpServer: any;
 
-let visitCount = 0;
-app.use(ctx => {
-  ctx.body = 'hello world';
-  console.log('visited ' + ++visitCount);
-});
+  constructor() {
+    this.app = new koa();
+    this.httpServer = http.createServer(this.app.callback());
+    this.io = socketio(this.httpServer);
+    this.initKoa();
+    this.initSocket();
+  }
 
-export default app;
+  initKoa() {
+    let visitCount = 0;
+    this.app.use((ctx: any) => {
+      ctx.body = 'hello world';
+      console.log('visited ' + ++visitCount);
+    });
+  }
+
+  initSocket() {
+    this.io.on('connection', (socket: Socket) => {
+      socket.on('login', () => {
+        console.log('user login');
+      });
+    });
+  }
+
+  listen(port: number) {
+    this.httpServer.listen(port, () => {
+      console.log('server started at ' + port);
+    });
+  }
+}
+
+export default new App();
